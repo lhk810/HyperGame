@@ -16,5 +16,6 @@ def decide(request: domain.Input):
         error = {'status':'INTERNAL SERVER ERROR'}
         return JSONResponse(error)
     decided = random_decision.random_decision(state.dices, state.scoreBoard.__root__[player_name]) #check later
+    print(f"the decision is {decided}")
     response = {'decision':{'choice':decided}}
     return JSONResponse(response)

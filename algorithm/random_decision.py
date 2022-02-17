@@ -41,13 +41,13 @@ def possible(dices: List[int], score: domain.Score):
     # filter already checked
     ret_filtered = set(ret)
     for item in ret:
-        if getattr(score, item):
+        if getattr(score, item) is not None:
             ret_filtered.discard(item)
 
     # choose any if set is empty
     if len(ret_filtered) == 0:
         members = score.__dict__.keys()
-        members = [item for item in members if not getattr(score, item)]
+        members = [item for item in members if getattr(score, item) is None] # not getattr(score, item) filter 0
         return set(members)
 
     return ret_filtered
