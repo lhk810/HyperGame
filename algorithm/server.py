@@ -1,40 +1,20 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from starlette.responses import JSONResponse
-from typing import List
 
-app = FastAPI()
+import domain
+import random_decision
 
-class Score(BaseModel):
-    aces : int
-    decues : int
-    threes : int
-    fours : int
-    fives : int
-    sixes : int
-    choice : int
-    fourKind : int
-    fullHouse : int
-    smallStraight : int
-    largeStraight : int
-    yacht: int
+app = FastAPI(debug=True)
 
-class Player(BaseModel):
-    name : str
-    score : Score
+player_name = "hk"
 
-class State(BaseModel):
-    turn : int
-    player : str
-    trial : int
-    dices : List[int]
-    scoreBoard : List[Player]
-
-class History(BaseModel):
-    states : List[State]
-
-@app.get("/history")
-def get_history():
-    state = []
-    # fetch previous desicions here
-    return JSONResponse(state)
+@app.post("/decide")
+def decide(request: domain.Input):
+    print(request)
+    state = dict(request)['state']
+    if state.player != player_name:
+        error = {'status':'INTERNAL SERVER ERROR'}
+        return JSONResponse(error)
+    decided = random_decision.random_decision(state.dices, state.scoreBoard.__root__[player_name]) #check later
+    response = {'decision':{'choice':decided}}
+    return JSONResponse(response)
