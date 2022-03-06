@@ -2,14 +2,21 @@ from typing import List
 
 import domain
 
-def score_map(dices : List[int])->dict:
-    ret = {}
+global cnt_list
+cnt_list = []
 
+
+def update_cnt_list(dices : List[int]):
+    global cnt_list
     cnt_list = []
     for i in range(0,7):
         cnt = dices.count(i)
         cnt_list.append(cnt)
 
+def score_map(dices : List[int])->dict:
+    ret = {}
+
+    global cnt_list
     ret["aces"] = cnt_list[1]*1
     ret["deuces"] = cnt_list[2]*2
     ret["threes"] = cnt_list[3]*3
