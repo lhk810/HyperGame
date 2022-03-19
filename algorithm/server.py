@@ -15,7 +15,6 @@ def decide(request: domain.Input):
     if state.player != player_name:
         error = {'status':'INTERNAL SERVER ERROR'}
         return JSONResponse(error)
-    #decided = rule_base.rule_base(state.dices, state.scoreBoard.__root__[player_name]) #check later
     decided = rule_base.rule_based_decision(state.dices, state.scoreBoard.__root__[player_name], state.trial)
     print(f"the decision is {decided}")
     response = {'decision':decided}
