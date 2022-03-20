@@ -59,7 +59,7 @@ def decision_policy(dices: List[int], dices_scores: dict, current_score: domain.
         return {'keep' : keep}
 
     # check fourKind
-    if dices_scores['fourKind'] > 0  and not is_choosable(names[max(cnt_list)]) and is_choosable('fourKind'):
+    if dices_scores['fourKind'] > 0  and is_choosable('fourKind') and ((not is_choosable(names[max(cnt_list)]) and max(cnt_list) > 3) or max(cnt_list) <= 3):
         return {'choice' : 'fourKind'}
 
     # check subtotal
@@ -99,7 +99,7 @@ def decision_policy(dices: List[int], dices_scores: dict, current_score: domain.
                     denom += i
             need = float(remain)/denom if denom > 0 else 0
             print(f'need is {need}, max_cnt is {max_cnt}')
-            if max_val*max_cnt < 15 and max_cnt < need and denom < 21:
+            if (max_val > 4 and max_val*max_cnt < 15) or (max_val <=4 and max_cnt < need and denom < 21):
                 if is_choosable('choice') and sum(dices) > 20:
                     return {'choice' : 'choice'}
                 if is_choosable('aces') and is_choosable('deuces'):
